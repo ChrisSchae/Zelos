@@ -1,0 +1,44 @@
+﻿@page "/add_new_script"
+@using Microsoft.Extensions.Logging
+@using ZelosFramework.NLP_Core
+@inject ILogger<NewScript> Logger
+@inject HttpClient Http
+
+<h1>Counter</h1>
+
+<EditForm EditContext="@editContext" OnValidSubmit="@HandleValidSubmitAsync">
+    <p>New script name <InputText id="name" @bind-Value="analysedDocument.Name" /></p>
+    <p>New script<br /> <InputTextArea id="name" @bind-Value="analysedDocument.ScriptString" /></p>
+
+    <button type="submit">Save script</button>
+</EditForm>
+
+<style>
+    textarea {
+        width: 326px;
+        resize: both;
+    }
+</style>
+@code {
+    private Script analysedDocument = new();
+    private EditContext editContext;
+
+    protected override void OnInitialized()
+    {
+        editContext = new(analysedDocument);
+    }
+
+    private async void HandleValidSubmitAsync()
+    {
+
+        if (editContext != null && editContext.Validate())
+        {
+            Logger.LogInformation("HandleSubmit called: Form is valid");
+            var result = await Http.PutAsJsonAsync<Script>("Script", analysedDocument);
+        }
+        else
+        {
+            Logger.LogInformation("HandleSubmit called: Form is INVALID");
+        }
+    }
+}

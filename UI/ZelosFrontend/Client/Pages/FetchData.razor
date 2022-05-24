@@ -1,0 +1,42 @@
+﻿@page "/saved_processes"
+@using ZelosFramework.NLP_Core
+@inject HttpClient Http
+
+<h1>Saved processes</h1>
+
+<p>This component demonstrates fetching data from the server.</p>
+
+@if (analysedDocuments == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Script</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var analysedDocument in analysedDocuments)
+            {
+                <tr>
+                    <td>@analysedDocument.Name</td>
+                    <td>@analysedDocument.ScriptString</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private Script[] analysedDocuments;
+
+    protected override async Task OnInitializedAsync()
+    {
+        analysedDocuments = await Http.GetFromJsonAsync<Script[]>("Script");
+    }
+
+}
