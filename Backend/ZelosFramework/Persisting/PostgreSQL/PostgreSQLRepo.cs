@@ -39,7 +39,7 @@ namespace Persisting.PostgreSQL
                 {
                     command.Parameters.AddWithValue("@ScriptName", script.Name);
                     command.Parameters.AddWithValue("@ScriptString", script.ScriptString);
-                    command.Parameters.AddWithValue("@SourceFileType", script.SourceFileType.ToString());
+                    command.Parameters.AddWithValue("@SourceFileType", script.SourceFileSettings.FileType.ToString());
                     var affectedRows = command.ExecuteNonQuery();
                     if(affectedRows == 1)
                     {
@@ -110,7 +110,7 @@ namespace Persisting.PostgreSQL
                         result = new Script();
                         result.Name = reader.GetString(0);
                         result.ScriptString = reader.GetString(1);
-                        result.SourceFileType = Enum.Parse<FileType>(reader.GetString(2));
+                        result.SourceFileSettings.FileType = Enum.Parse<FileType>(reader.GetString(2));
                     }
                     reader.Close();
                     return result;
@@ -137,7 +137,7 @@ namespace Persisting.PostgreSQL
                         resultEntry.Name = reader.GetString(0);
                         resultEntry.ScriptString = reader.GetString(1);
                         if(Enum.TryParse<FileType>(reader.GetString(2), false, out var fileType)){
-                            resultEntry.SourceFileType = fileType;
+                            resultEntry.SourceFileSettings.FileType = fileType;
                         }
                         result.Add(resultEntry);
                     }

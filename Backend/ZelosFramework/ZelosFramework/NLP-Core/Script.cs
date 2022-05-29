@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Text.Json.Serialization;
 using ZelosFramework.FileHandling;
@@ -9,14 +10,15 @@ using ZelosFramework.Scheduling;
 
 namespace ZelosFramework.NLP_Core
 {
-    public class Script
+    public partial class Script
     {
+        [JsonIgnore]
+        public List<AnalysisToken> TokenizedDoc { get; private set; } = new List<AnalysisToken>();
+
         public string Name { get; set; }
 
         public string ScriptString { get; set; }
 
-        [JsonIgnore]
-        public List<AnalysisToken> TokenizedDoc { get; private set; } = new List<AnalysisToken>();
         public FtpSource FtpSource { get; private set; } = new FtpSource();
 
         public bool IsFtpServerScript { get
@@ -26,35 +28,23 @@ namespace ZelosFramework.NLP_Core
             }
         }
 
-        public FileType SourceFileType { get; set; }
+        public FileSetting SourceFileSettings { get; set; } = new FileSetting();
+
         public SchedulingConfig SchedulingConfig { get; set; }
-
-        public object ExecuteScript()
+        public bool? IsWebDownloadScript
         {
-            if (this.IsFtpServerScript)
+            get
             {
-                return this.RunFTPDownload();
+                if (this.WebSource?.Url != string.Empty && this.WebSource.Url?.Trim().Length > 0) { return true; }
+                return false;
             }
-            return null;
         }
 
-        private FileInfo RunFTPDownload()
+        public WebSource WebSource { get; set; } = new WebSource();
+
+        internal IEnumerable<AnalysisToken> GetRemainingTokDoc(AnalysisToken token)
         {
-            var url = this.FtpSource.Url;
-            var conn = SetUpFTPConnection(url);
-            conn.Connect();
-
-            return conn.GetFile(this.FtpSource.FilePath, '.' + this.SourceFileType.ToString().ToLower());
-        }
-
-        private FtpComponent SetUpFTPConnection(string url)
-        {
-            if (this.FtpSource.User != null && this.FtpSource.Password != null)
-            {
-                return new FtpComponent(url, this.FtpSource.User, this.FtpSource.Password);
-            }
-
-            return new FtpComponent(url);
+            return this.TokenizedDoc.Skip(token.PositionInText + 1);
         }
     }
 }
