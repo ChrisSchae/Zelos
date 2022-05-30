@@ -26,7 +26,8 @@ namespace ZelosFrontend.Server
 
             services.AddControllersWithViews();
             services.AddRazorPages();
-            services.AddScoped<IScriptRepository, PostgreSQLRepo>();
+            services.AddScoped<IScriptRepository, PostgreSQLRepo>(); 
+            services.AddControllers().AddNewtonsoftJson();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

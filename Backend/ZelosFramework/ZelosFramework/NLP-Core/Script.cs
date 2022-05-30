@@ -29,6 +29,7 @@ namespace ZelosFramework.NLP_Core
             }
         }
 
+        [JsonIgnore]
         public FileSetting FileSettings { get; set; }
 
         public SchedulingConfig SchedulingConfig { get; set; }
