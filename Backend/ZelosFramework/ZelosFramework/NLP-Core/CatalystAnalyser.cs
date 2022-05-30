@@ -28,21 +28,11 @@ namespace ZelosFramework.NLP_Core
         {
             Document doc = ProcessInput(script.ScriptString);
             EnrichTokens(script, doc.TokensData);
-            DetermineSourceFileType(script);
+            DetermineFileSetting(script);
             DetermineScheduling(script);
             ProcessSourceInformation(script);
 
             return script;
-        }
-
-        private void DetermineSourceFileType(Script result)
-        {
-            var fileTypeNames = new List<string>(Enum.GetNames(typeof(FileType)));
-            if (result.TokenizedDoc.Any(t => fileTypeNames.Any(typeName => typeName.ToLower() == t.Word.ToLower())))
-            {
-                var firstTypeToken = result.TokenizedDoc.First(t => fileTypeNames.Any(typeName => typeName.ToLower() == t.Word.ToLower()));
-                result.SourceFileSettings.FileType = Enum.Parse<FileType>(firstTypeToken.Word);
-            }
         }
 
         private static string RecognizeSpecialString(string specialStringPredefiner, Script doc)

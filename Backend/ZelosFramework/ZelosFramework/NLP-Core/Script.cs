@@ -6,6 +6,7 @@ using System.Text;
 using System.Text.Json.Serialization;
 using ZelosFramework.FileHandling;
 using ZelosFramework.FTP;
+using ZelosFramework.NLP_Core.FileSettings;
 using ZelosFramework.Scheduling;
 
 namespace ZelosFramework.NLP_Core
@@ -28,7 +29,7 @@ namespace ZelosFramework.NLP_Core
             }
         }
 
-        public FileSetting SourceFileSettings { get; set; } = new FileSetting();
+        public FileSetting FileSettings { get; set; }
 
         public SchedulingConfig SchedulingConfig { get; set; }
         public bool? IsWebDownloadScript

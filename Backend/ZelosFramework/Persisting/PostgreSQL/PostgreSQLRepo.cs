@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using ZelosFramework.FileHandling;
 using ZelosFramework.NLP_Core;
 using Npgsql;
+using ZelosFramework.NLP_Core.FileSettings;
 
 namespace Persisting.PostgreSQL
 {
@@ -13,6 +14,16 @@ namespace Persisting.PostgreSQL
     {
         private readonly string connString;
         private readonly INlpAnalyzer analyzer;
+        private readonly Dictionary<FileType, Type> fileTypeToFileTypeConfig = new Dictionary<FileType, Type>() { 
+            { FileType.CSV, typeof(CSVFileSetting) },
+            { FileType.EXCEL, typeof(EXCELFileSetting) },
+            { FileType.JSON, typeof(JSONFileSetting) },
+            { FileType.PDF, typeof(PDFFileSetting) },
+            { FileType.TXT, typeof(TXTFileSetting) },
+            { FileType.XML, typeof(XMLFileSetting) },
+            { FileType.ZIP, typeof(ZIPFileSetting) },
+            { FileType.NONE, typeof(DefaultFileSetting) }
+        };
 
         public PostgreSQLRepo()
         {
@@ -39,9 +50,9 @@ namespace Persisting.PostgreSQL
                 {
                     command.Parameters.AddWithValue("@ScriptName", script.Name);
                     command.Parameters.AddWithValue("@ScriptString", script.ScriptString);
-                    command.Parameters.AddWithValue("@SourceFileType", script.SourceFileSettings.FileType.ToString());
+                    command.Parameters.AddWithValue("@SourceFileType", script.FileSettings.FileType.ToString());
                     var affectedRows = command.ExecuteNonQuery();
-                    if(affectedRows == 1)
+                    if (affectedRows == 1)
                     {
                         result = script;
                     }
@@ -95,56 +106,82 @@ namespace Persisting.PostgreSQL
 
         public Script GetScriptByName(string name)
         {
+            Script result = null;
+            int scriptId = -1;
             using (var conn = new NpgsqlConnection(connString))
-
             {
-                Console.Out.WriteLine("Opening connection");
                 conn.Open();
-                using (var command = new NpgsqlCommand($"SELECT \"Name\",\"ScriptString\",\"SourceFileType\" FROM PUBLIC.\"USER_SCRIPT\" WHERE \"Name\" = '{name}'", conn))
+                using (var command = new NpgsqlCommand($"SELECT \"Name\",\"ScriptString\",\"ID\" FROM PUBLIC.\"USER_SCRIPT\" WHERE \"Name\" = '{name}'", conn))
                 {
 
-                    Script result = null;
                     var reader = command.ExecuteReader();
                     while (reader.Read())
-                    { 
+                    {
                         result = new Script();
                         result.Name = reader.GetString(0);
                         result.ScriptString = reader.GetString(1);
-                        result.SourceFileSettings.FileType = Enum.Parse<FileType>(reader.GetString(2));
+                        scriptId = reader.GetInt32(2);
+                        //TODO result.SourceFileSettings.FileType = Enum.Parse<FileType>(reader.GetString(2));
                     }
                     reader.Close();
-                    return result;
                 }
-                throw new Npgsql.NpgsqlException("Connection not possible");
+            }
+            AddFileSettings(result, scriptId);
+            return result;
+        }
+
+        private void AddFileSettings(Script result, int scriptId)
+        {
+            using (var conn = new NpgsqlConnection(connString))
+            {
+                conn.Open();
+                using (var command = new NpgsqlCommand($"SELECT \"SourceFileType\",\"SettingsAsJSON\" FROM PUBLIC.\"FILE_CONFIG\" WHERE \"ScriptId\" = '{scriptId}'", conn))
+                {
+                    var reader = command.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        var fileType = Enum.Parse<FileType>(reader.GetString(0));
+
+                        if (fileTypeToFileTypeConfig.TryGetValue(fileType, out var fileSettingType))
+                        {
+                            var fileSetting = (FileSetting)Activator.CreateInstance(fileSettingType);
+                            result.FileSettings = fileSetting;
+                        }
+
+                    }
+                }
             }
         }
 
         public IEnumerable<Script> GetScripts(int maxCount = 10)
         {
-            var result = new List<Script>();
+            var result = new Dictionary<Script, int>();
             using (var conn = new NpgsqlConnection(connString))
             {
                 Console.Out.WriteLine("Opening connection");
                 conn.Open();
-                using (var command = new NpgsqlCommand($"SELECT \"Name\",\"ScriptString\",\"SourceFileType\" FROM PUBLIC.\"USER_SCRIPT\"  LIMIT {maxCount}", conn))
+                using (var command = new NpgsqlCommand($"SELECT \"Name\",\"ScriptString\",\"ID\" FROM PUBLIC.\"USER_SCRIPT\"  LIMIT {maxCount}", conn))
                 {
 
-                    
+
                     var reader = command.ExecuteReader();
                     while (reader.Read())
                     {
                         var resultEntry = new Script();
                         resultEntry.Name = reader.GetString(0);
                         resultEntry.ScriptString = reader.GetString(1);
-                        if(Enum.TryParse<FileType>(reader.GetString(2), false, out var fileType)){
-                            resultEntry.SourceFileSettings.FileType = fileType;
-                        }
-                        result.Add(resultEntry);
+                        var id = reader.GetInt32(2);
+                        result.Add(resultEntry, id);
                     }
                     reader.Close();
                 }
-                return result;
             }
+
+            foreach(var scriptPair in result)
+            {
+                AddFileSettings(scriptPair.Key, scriptPair.Value);
+            }
+            return result.Keys.ToList();
         }
     }
 }

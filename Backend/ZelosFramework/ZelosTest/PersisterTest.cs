@@ -21,7 +21,7 @@ namespace ZelosTest
 			var scriptResult = this.repo.GetScriptByName("Test123");
 
 			Assert.IsNotNull(scriptResult);
-			Assert.AreEqual(FileType.None, scriptResult.SourceFileSettings.FileType);
+			Assert.AreEqual(FileType.NONE, scriptResult.FileSettings.FileType);
 			Assert.AreEqual("This is a script entry", scriptResult.ScriptString);
 		}
 	}

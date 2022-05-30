@@ -26,7 +26,7 @@ namespace ZelosFramework.NLP_Core
             var conn = SetUpFTPConnection(url);
             conn.Connect();
 
-            return conn.GetFile(this.FtpSource.FilePath, '.' + this.SourceFileSettings.FileType.ToString().ToLower());
+            return conn.GetFile(this.FtpSource.FilePath, '.' + this.FileSettings.FileType.ToString().ToLower());
         }
 
         private FtpComponent SetUpFTPConnection(string url)

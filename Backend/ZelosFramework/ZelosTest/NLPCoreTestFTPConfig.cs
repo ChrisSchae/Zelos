@@ -51,15 +51,6 @@ namespace ZelosTest
 		}
 
 		[Test]
-		public void AsureRecognizedFileTypeIsCorrectAnonymous()
-		{
-			Assert.AreEqual(FileType.ZIP, DocWithAnonymousUserAndFTP.SourceFileSettings.FileType);
-		}
-
-
-		
-
-		[Test]
 		public void GetsFileFromFTPAsync()
 		{
 			var executionResult = this.DocWithAnonymousUserAndFTP.ExecuteScript();
@@ -85,13 +76,6 @@ namespace ZelosTest
 			Assert.AreEqual("ABC", DocWithGivenUserAndFTP.FtpSource.User);
 			Assert.AreEqual("pw123", DocWithGivenUserAndFTP.FtpSource.Password);
 			Assert.AreEqual("/climate_environment/CDC/observations_germany/climate/subdaily/air_temperature/recent/terminwerte_TU_00071_akt.zip", DocWithGivenUserAndFTP.FtpSource.FilePath);
-		}
-
-
-		[Test]
-		public void AsureRecognizedFileTypeIsCorrect_Doc2()
-		{
-			Assert.AreEqual(FileType.ZIP, DocWithGivenUserAndFTP.SourceFileSettings.FileType);
 		}
 	}
 }

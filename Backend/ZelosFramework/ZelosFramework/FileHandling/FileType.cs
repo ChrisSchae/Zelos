@@ -6,7 +6,7 @@ namespace ZelosFramework.FileHandling
 {
     public enum FileType
     {
-        None,
+        NONE,
         TXT,
         ZIP,
         CSV,
