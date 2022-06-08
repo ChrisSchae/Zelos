@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using NUnit.Framework;
 using ZelosFramework.FileHandling;
 using ZelosFramework.NLP_Core;
+using ZelosFramework.NLP_Core.Catalyst;
 using ZelosFramework.NLP_Core.FileSettings;
 
 namespace ZelosTest

@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using NUnit.Framework;
 using ZelosFramework.NLP_Core;
+using ZelosFramework.NLP_Core.Catalyst;
 
 namespace ZelosTest
 {

@@ -2,7 +2,7 @@
 using System.Linq;
 using ZelosFramework.Scheduling;
 
-namespace ZelosFramework.NLP_Core
+namespace ZelosFramework.NLP_Core.Catalyst
 {
     public partial class CatalystAnalyser
     {

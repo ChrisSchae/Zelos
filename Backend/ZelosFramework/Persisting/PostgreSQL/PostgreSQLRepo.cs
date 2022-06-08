@@ -7,6 +7,7 @@ using ZelosFramework.FileHandling;
 using ZelosFramework.NLP_Core;
 using Npgsql;
 using ZelosFramework.NLP_Core.FileSettings;
+using ZelosFramework.NLP_Core.Catalyst;
 
 namespace Persisting.PostgreSQL
 {

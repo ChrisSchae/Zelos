@@ -4,7 +4,7 @@ using System.Linq;
 using ZelosFramework.FileHandling;
 using ZelosFramework.NLP_Core.FileSettings;
 
-namespace ZelosFramework.NLP_Core
+namespace ZelosFramework.NLP_Core.Catalyst
 {
     public partial class CatalystAnalyser
     {

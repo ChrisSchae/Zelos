@@ -10,7 +10,9 @@
 
   <ItemGroup>
     <PackageReference Include="Catalyst.Models.English" Version="1.0.24970" />
+    <PackageReference Include="CherubNLP" Version="0.4.1" />
     <PackageReference Include="FluentFTP" Version="37.0.2" />
+    <PackageReference Include="OpenNLP.NET" Version="1.9.4" />
     <PackageReference Include="System.Collections" Version="4.3.0" />
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="6.0.0" />
     <PackageReference Include="System.IO.FileSystem" Version="4.3.0" />

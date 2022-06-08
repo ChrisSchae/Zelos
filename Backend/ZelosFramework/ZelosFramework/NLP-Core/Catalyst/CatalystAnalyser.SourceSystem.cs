@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ZelosFramework.NLP_Core
+namespace ZelosFramework.NLP_Core.Catalyst
 {
     public partial class CatalystAnalyser
     {

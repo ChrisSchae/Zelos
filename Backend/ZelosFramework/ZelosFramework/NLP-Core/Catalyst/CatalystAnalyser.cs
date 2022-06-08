@@ -1,20 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Catalyst;
 using Mosaik.Core;
-using ZelosFramework;
-using ZelosFramework.FileHandling;
-using ZelosFramework.NLP_Core;
-using ZelosFramework.Scheduling;
+using Catalyst.Models;
 
-namespace ZelosFramework.NLP_Core
+namespace ZelosFramework.NLP_Core.Catalyst
 {
     public partial class CatalystAnalyser : INlpAnalyzer
     {
         public CatalystAnalyser()
         {
-            Catalyst.Models.English.Register();
+            English.Register();
         }
 
         public Script Analyse(string script)

@@ -6,6 +6,7 @@ using ZelosFramework.FileHandling;
 using ZelosFramework.NLP_Core;
 using ZelosFramework.Scheduling;
 using NUnit.Framework;
+using ZelosFramework.NLP_Core.Catalyst;
 
 namespace ZelosTest
 {
@@ -30,7 +31,14 @@ namespace ZelosTest
 
 		}
 
-		
+
+		[Test]
+		public void AsureAnalysisDoesAnything()
+		{
+			Assert.IsNotNull(DocWithGivenUserAndFTP);
+
+		}
+
 
 		[Test]
 		public void AsureTagCountIsCorrectAnonymous()
@@ -56,13 +64,6 @@ namespace ZelosTest
 			var executionResult = this.DocWithAnonymousUserAndFTP.ExecuteScript();
 
 			Assert.IsInstanceOf(typeof(FileInfo), executionResult);
-		}
-
-		[Test]
-		public void AsureAnalysisDoesAnything()
-		{
-			Assert.IsNotNull(DocWithGivenUserAndFTP);
-
 		}
 
 		[Test]

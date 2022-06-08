@@ -1,6 +1,7 @@
 ﻿using NUnit.Framework;
 using ZelosFramework.NLP_Core;
 using ZelosFramework.Scheduling;
+using ZelosFramework.NLP_Core.Catalyst;
 
 namespace ZelosTest
 {
