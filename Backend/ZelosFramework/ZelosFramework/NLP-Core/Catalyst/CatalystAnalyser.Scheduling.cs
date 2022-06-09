@@ -61,11 +61,11 @@ namespace ZelosFramework.NLP_Core.Catalyst
         private static int GetDayOffset(AnalysisToken schedulingConfigStartToken, Script script)
         {
             var remainingTokDoc = script.GetRemainingTokDoc(schedulingConfigStartToken);
-            if (remainingTokDoc.Any(tok => tok.Word.ToUpper() == "AT"))
+            if (remainingTokDoc.Any(tok => tok.Word.ToUpper() == "AT") || remainingTokDoc.Any(tok => tok.Word.ToUpper() == "ON"))
             {
                 if (script.SchedulingConfig.IntervalType == IntervalType.Week)
                 {
-                    var intervallToken = remainingTokDoc.First(tok => tok.Word.ToUpper() == "AT");
+                    var intervallToken = remainingTokDoc.First(tok => tok.Word.ToUpper() == "ON");
                     switch (intervallToken.NextToken.Word.ToUpper())
                     {
                         case "MONDAY": return 1;

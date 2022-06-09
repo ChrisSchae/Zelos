@@ -1,0 +1,43 @@
+﻿@page  "/show_executed_runs"
+@using ZelosFramework.NLP_Core
+@inject HttpClient Http
+
+<h1>Executed runs</h1>
+
+@if (scriptRuns == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Script name</th>
+                <th>Execution time</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var scriptRun in scriptRuns)
+            {
+            <tr>
+                <td>@scriptRun.Script.Name</td>
+                <td>@scriptRun.ExecutionTime</td>
+                <td>@scriptRun.SuccessState</td>
+            </tr>
+            }
+        </tbody>
+    </table>
+}
+
+
+@code {
+    private ScriptRun[] scriptRuns;
+
+    protected override async Task OnInitializedAsync()
+    {
+        scriptRuns = await Http.GetFromJsonAsync<ScriptRun[]>("ExecutedScripts");
+    }
+
+}

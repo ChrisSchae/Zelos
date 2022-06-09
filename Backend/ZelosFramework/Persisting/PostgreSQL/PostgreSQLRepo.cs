@@ -8,6 +8,7 @@ using ZelosFramework.NLP_Core;
 using Npgsql;
 using ZelosFramework.NLP_Core.FileSettings;
 using ZelosFramework.NLP_Core.Catalyst;
+using Newtonsoft.Json;
 
 namespace Persisting.PostgreSQL
 {
@@ -47,11 +48,10 @@ namespace Persisting.PostgreSQL
             {
                 Console.Out.WriteLine("Opening connection");
                 conn.Open();
-                using (var command = new NpgsqlCommand("INSERT INTO \"USER_SCRIPT\" (\"Name\", \"ScriptString\", \"SourceFileType\") VALUES (@ScriptName, @ScriptString, @SourceFileType); ", conn))
+                using (var command = new NpgsqlCommand("INSERT INTO \"USER_SCRIPT\" (\"Name\", \"ScriptString\") VALUES (@ScriptName, @ScriptString); ", conn))
                 {
                     command.Parameters.AddWithValue("@ScriptName", script.Name);
                     command.Parameters.AddWithValue("@ScriptString", script.ScriptString);
-                    command.Parameters.AddWithValue("@SourceFileType", script.FileSettings.FileType.ToString());
                     var affectedRows = command.ExecuteNonQuery();
                     if (affectedRows == 1)
                     {
@@ -59,6 +59,7 @@ namespace Persisting.PostgreSQL
                     }
                 }
             }
+            this.SaveFileConfig(script);
             if (script.IsFtpServerScript)
             {
                 this.SaveFtpConfig(script);
@@ -66,22 +67,33 @@ namespace Persisting.PostgreSQL
             return result;
         }
 
-        private void SaveFtpConfig(Script script)
+        private void SaveFileConfig(Script script)
         {
-            var scriptId = -1;
-            using (var conn = new NpgsqlConnection(connString))
+            int scriptId = GetScriptId(script);
+            if (scriptId != -1)
             {
-                Console.Out.WriteLine("Opening connection");
-                conn.Open();
-                using (var command = new NpgsqlCommand($"SELECT \"ID\" FROM PUBLIC.\"USER_SCRIPT\" WHERE \"Name\" = '{script.Name}'", conn))
+                using (var conn = new NpgsqlConnection(connString))
                 {
-                    var reader = command.ExecuteReader();
-                    while (reader.Read())
+                    using (var command = new NpgsqlCommand("INSERT INTO \"FILE_CONFIG\" (\"SourceFileType\", \"SettingsAsJSON\", \"ScriptId\") " +
+                        "VALUES (@SourceFileType, @SettingsAsJSON, @ScriptId); ", conn))
                     {
-                        scriptId = reader.GetInt32(0);
+                        conn.Open();
+                        command.Parameters.AddWithValue("@ScriptId", scriptId);
+                        command.Parameters.AddWithValue("@SourceFileType", script.FileSettings.FileType.ToString());
+                        command.Parameters.AddWithValue("@SettingsAsJSON", JsonConvert.SerializeObject(script.FileSettings, Formatting.Indented));
+                        var affectedRows = command.ExecuteNonQuery();
+                        if (affectedRows != 1)
+                        {
+                            Console.Out.WriteLine("No FTP config was saved");
+                        }
                     }
                 }
             }
+        }
+
+        private void SaveFtpConfig(Script script)
+        {
+            int scriptId = GetScriptId(script);
             if (scriptId != -1)
             {
                 using (var conn = new NpgsqlConnection(connString))
@@ -103,6 +115,26 @@ namespace Persisting.PostgreSQL
                     }
                 }
             }
+        }
+
+        private int GetScriptId(Script script)
+        {
+            var scriptId = -1;
+            using (var conn = new NpgsqlConnection(connString))
+            {
+                Console.Out.WriteLine("Opening connection");
+                conn.Open();
+                using (var command = new NpgsqlCommand($"SELECT \"ID\" FROM PUBLIC.\"USER_SCRIPT\" WHERE \"Name\" = '{script.Name}'", conn))
+                {
+                    var reader = command.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        scriptId = reader.GetInt32(0);
+                    }
+                }
+            }
+
+            return scriptId;
         }
 
         public Script GetScriptByName(string name)

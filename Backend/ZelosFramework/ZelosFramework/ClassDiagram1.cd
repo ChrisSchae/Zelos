@@ -1,0 +1,124 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="ZelosFramework.NLP_Core.Script">
+    <Position X="7.5" Y="0.5" Width="2" />
+    <Members>
+      <Method Name="GetRemainingTokDoc" Hidden="true" />
+      <Method Name="RunFTPDownload" Hidden="true" />
+      <Method Name="SetUpFTPConnection" Hidden="true" />
+    </Members>
+    <AssociationLine Name="FileSettings" Type="ZelosFramework.NLP_Core.FileSettings.FileSetting">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.083" Y="0.755" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AIAgAAQAAAAAAAAAQABMAAQAgAACAAEAAAIAAAAAAAE=</HashCode>
+      <FileName>NLP-Core\Script.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="FileSettings" />
+      <Property Name="SchedulingConfig" />
+      <Property Name="WebSource" />
+      <Property Name="FtpSource" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Property Name="TokenizedDoc" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="ZelosFramework.NLP_Core.FileSettings.FileSetting">
+    <Position X="20.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>NLP-Core\FileSettings\FileSetting.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZelosFramework.Scheduling.SchedulingConfig">
+    <Position X="11.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAACIAAQAAAAAEAAA=</HashCode>
+      <FileName>Scheduling\SchedulingConfig.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZelosFramework.NLP_Core.WebSource">
+    <Position X="4.75" Y="0.5" Width="1.5" />
+    <Members>
+      <Property Name="Password" Hidden="true" />
+      <Property Name="User" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAABCAAAAAAAAAAAAAAAAAAAAAAAAAACCAAAAAAAAAA=</HashCode>
+      <FileName>NLP-Core\WebSource.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZelosFramework.NLP_Core.AnalysisToken">
+    <Position X="4.75" Y="2.5" Width="1.5" />
+    <Members>
+      <Method Name="AnalysisToken" Hidden="true" />
+    </Members>
+    <AssociationLine Name="NextToken" Type="ZelosFramework.NLP_Core.AnalysisToken" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="4.75" Y="3.441" />
+        <Point X="4.496" Y="3.441" />
+        <Point X="4.496" Y="4.363" />
+        <Point X="5.312" Y="4.363" />
+        <Point X="5.312" Y="3.988" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.962" Y="-0.032" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <AssociationLine Name="PreviousToken" Type="ZelosFramework.NLP_Core.AnalysisToken" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="5.282" Y="2.5" />
+        <Point X="5.282" Y="2.125" />
+        <Point X="4.375" Y="2.125" />
+        <Point X="4.375" Y="3" />
+        <Point X="4.75" Y="3" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.302" Y="0.386" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAMAAAAAAAAAAAAAAAAAAAAIIQAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>NLP-Core\AnalysisToken.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="NextToken" />
+      <Property Name="PreviousToken" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="ZelosFramework.NLP_Core.FtpSource">
+    <Position X="9" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABAAAAAAAAAAAAAAAAAAAAAAAAAAACCABAAAAAAAA=</HashCode>
+      <FileName>NLP-Core\FtpSource.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZelosFramework.NLP_Core.FileSettings.CSVFileSetting">
+    <Position X="18" Y="3.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAIEAAAAAAAAAAAAAAAAAQAAAAAAEAAAAAQAAAAAAA=</HashCode>
+      <FileName>NLP-Core\FileSettings\CSVFileSetting.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZelosFramework.NLP_Core.FileSettings.DefaultFileSetting">
+    <Position X="20.5" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>NLP-Core\FileSettings\DefaultFileSetting.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZelosFramework.NLP_Core.FileSettings.ZIPFileSetting">
+    <Position X="23" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>NLP-Core\FileSettings\ZIPFileSetting.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="ExtractedFileSettings" />
+    </ShowAsAssociation>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

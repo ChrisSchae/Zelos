@@ -16,7 +16,7 @@ namespace ZelosTest
 		{
 			INlpAnalyzer analyzer = new CatalystAnalyser();
 
-			this.DocWithTimeWeekly = analyzer.Analyse("I want to download a ZIP file from the FTP server 'opendata.dwd.de' with an anonymous user from path '/climate_environment/CDC/observations_germany/climate/subdaily/air_temperature/recent/terminwerte_TU_00071_akt.zip' every week at Tuesday at 3 PM");
+			this.DocWithTimeWeekly = analyzer.Analyse("I want to download a ZIP file from the FTP server 'opendata.dwd.de' with an anonymous user from path '/climate_environment/CDC/observations_germany/climate/subdaily/air_temperature/recent/terminwerte_TU_00071_akt.zip' every week on Tuesday at 3 PM");
 			this.DocWithTimeMonthly = analyzer.Analyse("I want to download a ZIP file from the FTP server 'opendata.dwd.de' with an anonymous user from path '/climate_environment/CDC/observations_germany/climate/subdaily/air_temperature/recent/terminwerte_TU_00071_akt.zip' every month at the twenty-third day at 2");
 			this.DocWithTimeDaily = analyzer.Analyse("I want to download a ZIP file from the FTP server 'opendata.dwd.de' with an anonymous user from path '/climate_environment/CDC/observations_germany/climate/subdaily/air_temperature/recent/terminwerte_TU_00071_akt.zip' every day at 15:15");
 		}

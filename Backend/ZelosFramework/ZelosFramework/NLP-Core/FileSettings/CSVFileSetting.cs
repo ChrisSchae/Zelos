@@ -12,6 +12,8 @@ namespace ZelosFramework.NLP_Core.FileSettings
 
         public int[] ValueCols { get; set; }
 
+        public char Delimiter { get; set; } = ',';
+
         public CSVFileSetting()
         {
             this.FileType = FileType.CSV;
